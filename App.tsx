@@ -88,11 +88,16 @@ const App: React.FC = () => {
   const handleDaySelect = (index: number) => {
     setCurrentDayIndex(index);
   };
+
+  const isPhotoDay = !!activeDayData?.imageUrl;
+  const isWhiteDay = activeDayData?.color === 'white';
+  const mainBgClass = isPhotoDay ? 'bg-gray-900' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
+  const headerTextClass = isPhotoDay || !isWhiteDay ? 'text-white' : 'text-gray-800';
   
   return (
-    <main className={`relative min-h-screen text-gray-800 font-sans flex flex-col bg-gray-900`}>
+    <main className={`relative min-h-screen font-sans flex flex-col transition-colors duration-1000 ${mainBgClass}`}>
       {/* Background Image Container */}
-      {bgImage && (
+      {isPhotoDay && bgImage && (
         <>
             <div
                 key={bgImage}
@@ -105,7 +110,7 @@ const App: React.FC = () => {
       
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-8 w-full flex-grow flex flex-col">
         <header className="text-center mb-12 pt-8">
-          <h1 className={`text-4xl md:text-6xl font-extrabold tracking-tight text-white`}>
+          <h1 className={`text-4xl md:text-6xl font-extrabold tracking-tight ${headerTextClass}`}>
             Rajasthan
           </h1>
         </header>
