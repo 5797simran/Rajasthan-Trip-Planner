@@ -1,8 +1,7 @@
 import { ItineraryDay, ActivityType } from './types';
 
-// To use your own images, upload them to a public GitHub repository
-// and replace the URL below with your repository's raw content URL.
-const GITHUB_IMAGE_BASE_URL = 'https://raw.githubusercontent.com/react-dev-ai/rajasthan-itinerary-assets/main/';
+// Your images should be placed in a `public/images` folder.
+// For example, the image for Mount Abu should be at `public/images/mount-abu.jpg`.
 
 export const ITINERARY_DATA: ItineraryDay[] = [
   {
@@ -25,7 +24,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Mount Abu',
     color: 'emerald',
     coords: { lat: 24.5926, lng: 72.7156 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}mount-abu.jpg`,
+    imageUrl: '/images/mount-abu.jpg',
     activities: [
       { type: ActivityType.Arrival, description: 'Arrive at Abu Road station (ABR).', time: '10:45 AM' },
       { type: ActivityType.Explore, description: 'Transfer to Mount Abu and check into your hotel.' },
@@ -40,7 +39,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Udaipur',
     color: 'slate',
     coords: { lat: 24.5854, lng: 73.7125 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}udaipur.jpg`,
+    imageUrl: '/images/udaipur.jpg',
     activities: [
       { type: ActivityType.TravelBus, description: 'Daytime Travel (3-4 hours) by bus to Udaipur.' },
       { type: ActivityType.Arrival, description: 'Arrive in the afternoon and check in.' },
@@ -55,7 +54,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Udaipur',
     color: 'slate',
     coords: { lat: 24.5854, lng: 73.7125 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}udaipur.jpg`,
+    imageUrl: '/images/udaipur.jpg',
     activities: [
       { type: ActivityType.Explore, description: "Explore Udaipur's magnificent City Palace and the old city's charm." },
       { type: ActivityType.TravelTrain, description: 'Board a late-night train from Udaipur to Jaipur.' },
@@ -68,7 +67,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jaipur',
     color: 'rose',
     coords: { lat: 26.9124, lng: 75.7873 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jaipur.jpg`,
+    imageUrl: '/images/jaipur.jpg',
     activities: [
       { type: ActivityType.Arrival, description: 'Arrive in Jaipur in the morning.' },
       { type: ActivityType.Explore, description: 'Visit the City Palace, Jantar Mantar, and Hawa Mahal.' },
@@ -82,7 +81,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jaipur',
     color: 'rose',
     coords: { lat: 26.9124, lng: 75.7873 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jaipur.jpg`,
+    imageUrl: '/images/jaipur.jpg',
     activities: [
       { type: ActivityType.Explore, description: 'Visit the spectacular Amber Fort.' },
       { type: ActivityType.TravelTrain, description: 'Board a late-night train from Jaipur to Bikaner.' },
@@ -95,7 +94,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Bikaner',
     color: 'red',
     coords: { lat: 28.0229, lng: 73.3119 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}bikaner.jpg`,
+    imageUrl: '/images/bikaner.jpg',
     activities: [
       { type: ActivityType.Arrival, description: 'Arrive in Bikaner in the morning.' },
       { type: ActivityType.Explore, description: 'Visit the unconquered Junagarh Fort and the unique Karni Mata Temple.' },
@@ -109,7 +108,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jaisalmer',
     color: 'amber',
     coords: { lat: 26.9157, lng: 70.9083 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jaisalmer.jpg`,
+    imageUrl: '/images/jaisalmer.jpg',
     activities: [
       { type: ActivityType.TravelBus, description: 'Daytime Travel (6-7 hours) by morning bus to Jaisalmer.' },
       { type: ActivityType.Arrival, description: 'Arrive late afternoon, head to desert camp at Sam Sand Dunes.' },
@@ -124,7 +123,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jaisalmer',
     color: 'amber',
     coords: { lat: 26.9157, lng: 70.9083 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jaisalmer.jpg`,
+    imageUrl: '/images/jaisalmer.jpg',
     activities: [
       { type: ActivityType.Explore, description: 'After breakfast in the desert, explore the magnificent, living Jaisalmer Fort.' },
       { type: ActivityType.TravelTrain, description: 'Board a late-night train from Jaisalmer to Jodhpur.' },
@@ -137,7 +136,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jodhpur',
     color: 'sky',
     coords: { lat: 26.2389, lng: 73.0243 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jodhpur.jpg`,
+    imageUrl: '/images/jodhpur.jpg',
     activities: [
       { type: ActivityType.Arrival, description: 'Arrive in Jodhpur in the morning.' },
       { type: ActivityType.Explore, description: 'Visit the mighty Mehragarh Fort and explore the Clock Tower market.' },
@@ -151,7 +150,7 @@ export const ITINERARY_DATA: ItineraryDay[] = [
     city: 'Jodhpur',
     color: 'sky',
     coords: { lat: 26.2389, lng: 73.0243 },
-    imageUrl: `${GITHUB_IMAGE_BASE_URL}jodhpur.jpg`,
+    imageUrl: '/images/jodhpur.jpg',
     activities: [
       { type: ActivityType.Explore, description: 'Enjoy a final relaxed morning in the Blue City.' },
       { type: ActivityType.Departure, description: 'Head to Jodhpur airport or railway station for your journey home.' },
