@@ -23,7 +23,6 @@ export interface ItineraryDay {
   color: string;
   activities: Activity[];
   coords: { lat: number; lng: number };
-  imageUrl: string;
 }
 
 export interface City {

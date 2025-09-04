@@ -3,11 +3,38 @@ import ItineraryTimeline from './components/ItineraryTimeline';
 import MapComponent from './components/Map';
 import DayNavigator from './components/DayNavigator';
 import { ITINERARY_DATA } from './constants';
-import type { City } from './types';
+import type { City, ItineraryDay } from './types';
+import GeometricPattern from './components/GeometricPattern';
+
+const backgroundColors: { [key: string]: string } = {
+    gray: 'bg-gray-900',
+    emerald: 'bg-emerald-900',
+    ivory: 'bg-stone-100', // Corrected: Light ivory background for Udaipur
+    rose: 'bg-rose-900',
+    orange: 'bg-orange-900',
+    yellow: 'bg-amber-900',
+    sky: 'bg-sky-900',
+};
 
 const App: React.FC = () => {
   const [highlightedCity, setHighlightedCity] = useState<string | null>(null);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
+  
+  const [activePattern, setActivePattern] = useState(ITINERARY_DATA[0].color);
+  const [oldPattern, setOldPattern] = useState<string | null>(null);
+
+  useEffect(() => {
+    const newColor = ITINERARY_DATA[currentDayIndex].color;
+    if (newColor !== activePattern) {
+        setOldPattern(activePattern);
+        setActivePattern(newColor);
+        const timer = setTimeout(() => {
+            setOldPattern(null);
+        }, 1000); // Match CSS animation duration
+        return () => clearTimeout(timer);
+    }
+  }, [currentDayIndex, activePattern]);
+
 
   const cities = useMemo(() => {
     const cityMap = new Map<string, City>();
@@ -42,9 +69,8 @@ const App: React.FC = () => {
     return [];
   }, [currentDayIndex]);
   
-  const activeDayData = useMemo(() => {
-    const day = ITINERARY_DATA[currentDayIndex];
-    return day ? { coords: day.coords, color: day.color, city: day.city, imageUrl: day.imageUrl } : null;
+  const activeDayData: ItineraryDay | null = useMemo(() => {
+    return ITINERARY_DATA[currentDayIndex] || null;
   }, [currentDayIndex]);
 
   const handlePrev = () => {
@@ -59,83 +85,78 @@ const App: React.FC = () => {
     setCurrentDayIndex(index);
   };
 
-  const isPhotoDay = !!activeDayData?.imageUrl;
-  const isWhiteDay = activeDayData?.color === 'white';
-  const mainBgClass = isPhotoDay ? '' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
-  const headerTextClass = isPhotoDay || !isWhiteDay ? 'text-white' : 'text-gray-800';
+  const mainBgClass = backgroundColors[activePattern] || 'bg-gray-900';
+  const patternColorClass = activePattern === 'ivory' ? 'text-amber-600' : 'text-white';
+  const headerTextColor = activePattern === 'ivory' ? 'text-gray-800' : 'text-white';
+
   
   return (
     <main className={`relative min-h-screen font-sans flex flex-col transition-colors duration-1000 ${mainBgClass}`}>
-      {/* Background Image Container */}
-      {isPhotoDay && activeDayData.imageUrl && (
-        <div
-          key={activeDayData.imageUrl}
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 animate-fade-in"
-          style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${activeDayData.imageUrl}')` }}
-        />
-      )}
+      <div className="absolute inset-0 w-full h-full">
+        {oldPattern && (
+          <div key={`${oldPattern}-old`} className="absolute inset-0 w-full h-full animate-fade-out">
+            <GeometricPattern color={oldPattern} className={`w-full h-full opacity-20 ${oldPattern === 'ivory' ? 'text-amber-600' : 'text-white'}`}/>
+          </div>
+        )}
+        <div key={activePattern} className="absolute inset-0 w-full h-full animate-fade-in">
+          <GeometricPattern color={activePattern} className={`w-full h-full opacity-25 ${patternColorClass}`}/>
+        </div>
+      </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-8 w-full flex-grow flex flex-col">
-        <header className="text-center mb-12 pt-8">
-          <h1 className={`text-4xl md:text-6xl font-extrabold tracking-tight ${headerTextClass}`}>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 w-full flex-grow flex flex-col">
+        <header className="text-center shrink-0 py-8 sm:py-12">
+          <h1 className={`text-4xl md:text-6xl font-extrabold tracking-tight ${headerTextColor}`}>
             Rajasthan
           </h1>
         </header>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 xl:gap-24 flex-grow items-center">
-          <section className="flex flex-col items-center justify-center relative px-12 sm:px-16">
-            <button 
-              onClick={handlePrev} 
-              disabled={currentDayIndex === 0}
-              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-3 rounded-full shadow-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 backdrop-blur-sm"
-              aria-label="Previous Day"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-            </button>
+        <div className="flex-grow flex flex-col lg:justify-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 xl:gap-24 w-full lg:items-center">
+              <section className="flex flex-col items-center justify-center relative px-12 sm:px-16 order-2 lg:order-1">
+                <button 
+                  onClick={handlePrev} 
+                  disabled={currentDayIndex === 0}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-3 rounded-full shadow-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 backdrop-blur-sm"
+                  aria-label="Previous Day"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+                </button>
 
-            <div className="w-full">
-              <ItineraryTimeline 
-                dayIndex={currentDayIndex}
-                onHoverCity={setHighlightedCity} 
-              />
+                <div className="w-full">
+                  <ItineraryTimeline 
+                    dayIndex={currentDayIndex}
+                    onHoverCity={setHighlightedCity} 
+                  />
+                </div>
+                
+                <button 
+                  onClick={handleNext} 
+                  disabled={currentDayIndex === ITINERARY_DATA.length - 1}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-3 rounded-full shadow-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 backdrop-blur-sm"
+                  aria-label="Next Day"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                </button>
+                <DayNavigator 
+                  totalDays={ITINERARY_DATA.length}
+                  currentIndex={currentDayIndex}
+                  onSelectDay={handleDaySelect}
+                  activeColor={activeDayData?.color || 'gray'}
+                />
+              </section>
+              <aside className="lg:col-span-1 flex items-center order-1 lg:order-2">
+                 <div className="w-full">
+                  <MapComponent 
+                    cities={cities} 
+                    highlightedCity={highlightedCity} 
+                    waypoints={waypoints}
+                    activeDayData={activeDayData}
+                  />
+                 </div>
+              </aside>
             </div>
-            
-            <button 
-              onClick={handleNext} 
-              disabled={currentDayIndex === ITINERARY_DATA.length - 1}
-              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/90 p-3 rounded-full shadow-md hover:bg-white disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-110 active:scale-95 backdrop-blur-sm"
-              aria-label="Next Day"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            </button>
-            <DayNavigator 
-              totalDays={ITINERARY_DATA.length}
-              currentIndex={currentDayIndex}
-              onSelectDay={handleDaySelect}
-              activeColor={activeDayData?.color || 'gray'}
-            />
-          </section>
-          <aside className="lg:col-span-1 mt-8 lg:mt-0">
-             <div className="lg:sticky lg:top-8">
-              <MapComponent 
-                cities={cities} 
-                highlightedCity={highlightedCity} 
-                waypoints={waypoints}
-                activeDayData={activeDayData}
-              />
-             </div>
-          </aside>
         </div>
       </div>
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        .animate-fade-in {
-          animation: fade-in 1s ease-in-out forwards;
-        }
-      `}</style>
     </main>
   );
 };

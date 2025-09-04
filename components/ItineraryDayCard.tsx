@@ -1,41 +1,16 @@
 import React from 'react';
 import { ItineraryDay, Activity, ActivityType } from '../types';
+import GeometricPattern from './GeometricPattern';
 
 const colorVariants: { [key: string]: { border: string; bg: string; text: string; icon: string; header: string } } = {
-    white: { border: 'border-gray-200', bg: 'bg-gray-800', text: 'text-gray-700', icon: 'text-gray-600', header: 'bg-gray-50' },
-    emerald: { border: 'border-emerald-300', bg: 'bg-emerald-500', text: 'text-emerald-600', icon: 'text-emerald-500', header: 'bg-emerald-50' },
-    slate: { border: 'border-slate-300', bg: 'bg-slate-500', text: 'text-slate-600', icon: 'text-slate-500', header: 'bg-slate-50' },
-    rose: { border: 'border-rose-300', bg: 'bg-rose-500', text: 'text-rose-600', icon: 'text-rose-500', header: 'bg-rose-50' },
-    red: { border: 'border-red-300', bg: 'bg-red-500', text: 'text-red-600', icon: 'text-red-500', header: 'bg-red-50' },
-    amber: { border: 'border-amber-300', bg: 'bg-amber-500', text: 'text-amber-600', icon: 'text-amber-500', header: 'bg-amber-50' },
-    sky: { border: 'border-sky-300', bg: 'bg-sky-500', text: 'text-sky-600', icon: 'text-sky-500', header: 'bg-sky-50' },
+    gray:   { border: 'border-gray-200',   bg: 'bg-gray-500',   text: 'text-gray-600',   icon: 'text-gray-500',   header: 'bg-gray-50' },
+    emerald:{ border: 'border-emerald-200', bg: 'bg-emerald-500', text: 'text-emerald-700', icon: 'text-emerald-500', header: 'bg-emerald-50' },
+    ivory:  { border: 'border-amber-200',  bg: 'bg-amber-500',  text: 'text-amber-700',  icon: 'text-amber-500',  header: 'bg-white' },
+    rose:   { border: 'border-rose-200',   bg: 'bg-rose-400',   text: 'text-rose-600',   icon: 'text-rose-500',   header: 'bg-rose-50' },
+    orange: { border: 'border-orange-200', bg: 'bg-orange-400', text: 'text-orange-600', icon: 'text-orange-500', header: 'bg-orange-50' },
+    yellow: { border: 'border-yellow-200', bg: 'bg-yellow-400', text: 'text-yellow-600', icon: 'text-yellow-500', header: 'bg-yellow-50' },
+    sky:    { border: 'border-sky-200',    bg: 'bg-sky-400',    text: 'text-sky-600',    icon: 'text-sky-500',    header: 'bg-sky-50' },
 };
-
-const HeaderPattern: React.FC<{ color: string }> = ({ color }) => {
-    const patterns: { [key: string]: React.ReactNode } = {
-        emerald: <path d="M0 20 Q 25 0, 50 20 T 100 20" stroke="currentColor" fill="none" strokeWidth="1"/>,
-        slate: <path d="M-10 10.5 C-10 4.7 4.7-10 10.5-10 S31 4.7 31 10.5 16.3 31 10.5 31 -10 16.3 -10 10.5z M30 20.5 C30 14.7 44.7 0 50.5 0 S71 14.7 71 20.5 56.3 41 50.5 41 30 26.3 30 20.5z" fill="none" stroke="currentColor" strokeWidth="1" />,
-        rose: <path d="M.5 200V.5H200" fill="none" stroke="currentColor" strokeWidth="1"/>,
-        red: <path d="M0 0 H 25 V 25 H 50 V 50 H 0 Z" fill="currentColor" fillOpacity="0.5"/>,
-        amber: <path d="M10 0 L20 20 L0 8 H30 L10 28" fill="none" stroke="currentColor" strokeWidth="1"/>,
-        sky: <path d="M-10 25 Q 15 0, 40 25 T 90 25" stroke="currentColor" fill="none" strokeWidth="1"/>,
-        white: <path d="M0 10h50 M0 20h50 M0 30h50 M0 40h50" stroke="currentColor" fill="none" strokeWidth="0.5"/>,
-    };
-
-    const pattern = patterns[color] || patterns.white;
-
-    return (
-        <svg aria-hidden="true" className="absolute inset-0 h-full w-full opacity-10">
-            <defs>
-                <pattern id={`pattern-${color}`} x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="translate(-1 -1)">
-                   {pattern}
-                </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill={`url(#pattern-${color})`}/>
-        </svg>
-    );
-};
-
 
 const ActivityIcon: React.FC<{ type: ActivityType; className: string }> = ({ type, className }) => {
   const iconProps = { className: `w-6 h-6 ${className}`, fill: "none", viewBox: "0 0 24 24", stroke: "currentColor", strokeWidth: 2 };
@@ -71,7 +46,8 @@ interface ItineraryDayCardProps {
 }
 
 const ItineraryDayCard: React.FC<ItineraryDayCardProps> = ({ dayData, onHover }) => {
-  const cardColors = colorVariants[dayData.color] || colorVariants.white;
+  const cardColors = colorVariants[dayData.color] || colorVariants.gray;
+  const ringColor = dayData.color === 'ivory' ? 'ring-stone-100' : 'ring-white';
 
   return (
     <div
@@ -79,13 +55,13 @@ const ItineraryDayCard: React.FC<ItineraryDayCardProps> = ({ dayData, onHover })
       onMouseEnter={() => onHover(dayData.city)}
       onMouseLeave={() => onHover(null)}
     >
-      <div className={`absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white font-extrabold text-lg ${cardColors.bg} ring-8 ring-white shadow`}>
+      <div className={`absolute left-0 top-0 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center text-white font-extrabold text-lg ${cardColors.bg} ring-8 ${ringColor} shadow`}>
         {dayData.day}
       </div>
       
       <div className={`bg-white rounded-2xl shadow-lg border ${cardColors.border} overflow-hidden transition-all duration-300 hover:shadow-2xl hover:scale-[1.02]`}>
         <div className={`relative p-5 border-b ${cardColors.border} ${cardColors.header}`}>
-            <HeaderPattern color={dayData.color} />
+            <GeometricPattern color={dayData.color} className="absolute inset-0 h-full w-full opacity-20" />
             <div className="relative">
                 <p className={`text-xs font-bold uppercase tracking-wider ${cardColors.text}`}>{dayData.city}</p>
                 <h2 className="text-2xl font-bold text-gray-800 mt-1 font-serif">{dayData.title}</h2>

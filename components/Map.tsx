@@ -16,13 +16,13 @@ interface MapProps {
 }
 
 const colorMap: { [key: string]: string } = {
-    white: '#374151',
-    emerald: '#34d399',
-    slate: '#64748b',
-    rose: '#fb7185',
-    red: '#f87171',
-    amber: '#fbbf24',
-    sky: '#38bdf8',
+    gray:   '#a3a3a3', // neutral-400
+    emerald:'#6ee7b7', // emerald-300
+    ivory:  '#d97706', // amber-600 (dark golden)
+    rose:   '#fda4af', // rose-300
+    orange: '#fdba74', // orange-300
+    yellow: '#fcd34d', // amber-300
+    sky:    '#7dd3fc', // sky-300
 };
 
 const Map: React.FC<MapProps> = ({ cities, highlightedCity, waypoints, activeDayData }) => {
@@ -49,7 +49,7 @@ const Map: React.FC<MapProps> = ({ cities, highlightedCity, waypoints, activeDay
 
     cities.forEach(city => {
       const icon = L.divIcon({
-          html: `<svg viewBox="0 0 24 24" class="w-8 h-8 drop-shadow-lg transition-transform duration-200" style="color: ${colorMap[city.color] || '#374151'}"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg>`,
+          html: `<svg viewBox="0 0 24 24" class="w-8 h-8 drop-shadow-lg transition-transform duration-200" style="color: ${colorMap[city.color] || '#a3a3a3'}"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"></path></svg>`,
           className: '',
           iconSize: [32, 32],
           iconAnchor: [16, 32],
@@ -141,7 +141,7 @@ const Map: React.FC<MapProps> = ({ cities, highlightedCity, waypoints, activeDay
   }, [activeDayData?.color])
 
   return (
-    <div className="relative w-full aspect-square rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+    <div className="relative w-full aspect-[4/3] lg:aspect-square rounded-2xl shadow-lg border border-gray-200/20 overflow-hidden">
         <div ref={mapContainerRef} className="h-full w-full" />
         <div ref={overlayRef} className="absolute top-0 left-0 h-full w-full transition-colors duration-1000 pointer-events-none" style={{ backgroundColor: 'transparent', opacity: 0.15 }} />
     </div>
