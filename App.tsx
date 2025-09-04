@@ -9,36 +9,6 @@ const App: React.FC = () => {
   const [highlightedCity, setHighlightedCity] = useState<string | null>(null);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
 
-  // State for handling background image cross-fade
-  const [bgImage, setBgImage] = useState(ITINERARY_DATA[0].imageUrl);
-
-  useEffect(() => {
-    const newImage = ITINERARY_DATA[currentDayIndex].imageUrl;
-    let linkElement: HTMLLinkElement | null = null;
-
-    if (newImage) {
-      // Preload the next image
-      linkElement = document.createElement('link');
-      linkElement.rel = 'preload';
-      linkElement.as = 'image';
-      linkElement.href = newImage;
-      document.head.appendChild(linkElement);
-    }
-
-    // Set a timeout to allow the fade-out effect before changing the image
-    const timer = setTimeout(() => {
-      setBgImage(newImage);
-    }, 500); // This should match the fade-out duration
-
-    return () => {
-      clearTimeout(timer);
-      if (linkElement) {
-        document.head.removeChild(linkElement);
-      }
-    };
-  }, [currentDayIndex]);
-
-
   const cities = useMemo(() => {
     const cityMap = new Map<string, City>();
     ITINERARY_DATA.forEach(day => {
@@ -91,17 +61,17 @@ const App: React.FC = () => {
 
   const isPhotoDay = !!activeDayData?.imageUrl;
   const isWhiteDay = activeDayData?.color === 'white';
-  const mainBgClass = isPhotoDay ? 'bg-black' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
+  const mainBgClass = isPhotoDay ? '' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
   const headerTextClass = isPhotoDay || !isWhiteDay ? 'text-white' : 'text-gray-800';
   
   return (
     <main className={`relative min-h-screen font-sans flex flex-col transition-colors duration-1000 ${mainBgClass}`}>
       {/* Background Image Container */}
-      {isPhotoDay && bgImage && (
+      {isPhotoDay && activeDayData.imageUrl && (
         <div
-          key={bgImage}
+          key={activeDayData.imageUrl}
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 animate-fade-in"
-          style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${bgImage}')` }}
+          style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${activeDayData.imageUrl}')` }}
         />
       )}
       
