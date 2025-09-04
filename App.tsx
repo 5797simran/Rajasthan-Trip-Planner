@@ -91,21 +91,18 @@ const App: React.FC = () => {
 
   const isPhotoDay = !!activeDayData?.imageUrl;
   const isWhiteDay = activeDayData?.color === 'white';
-  const mainBgClass = isPhotoDay ? 'bg-gray-900' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
+  const mainBgClass = isPhotoDay ? 'bg-black' : (isWhiteDay ? 'bg-white' : 'bg-gray-900');
   const headerTextClass = isPhotoDay || !isWhiteDay ? 'text-white' : 'text-gray-800';
   
   return (
     <main className={`relative min-h-screen font-sans flex flex-col transition-colors duration-1000 ${mainBgClass}`}>
       {/* Background Image Container */}
       {isPhotoDay && bgImage && (
-        <>
-            <div
-                key={bgImage}
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 animate-fade-in"
-                style={{ backgroundImage: `url('${bgImage}')` }}
-            />
-            <div className="absolute inset-0 bg-black/50" />
-        </>
+        <div
+          key={bgImage}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 animate-fade-in"
+          style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('${bgImage}')` }}
+        />
       )}
       
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-8 w-full flex-grow flex flex-col">
